@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    container_name: voluets_postgres
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/voluets_postgres:/var/lib/postgresql/data
+    env_file: .postgres.env
+
+  voluets_calculator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: voluets_calculator
+    expose:
+      - 4000
+    depends_on:
+      - postgres
+    env_file: .voluets_calculator.env
